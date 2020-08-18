@@ -1,0 +1,124 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 11.3
+-- Dumped by pg_dump version 11.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: movies; Type: TABLE; Schema: public; Owner: yopi
+--
+
+CREATE TABLE public.movies (
+    id integer NOT NULL,
+    title text,
+    release_date timestamp
+);
+
+ALTER TABLE public.movies OWNER TO yopi;
+
+--
+-- Name: movies_id_seq; Type: SEQUENCE; Schema: public; Owner: yopi
+--
+
+CREATE SEQUENCE public.movies_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE public.movies_id_seq OWNER TO yopi;
+
+--
+-- Name: movies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yopi
+--
+
+ALTER SEQUENCE public.movies_id_seq OWNED BY public.movies.id;
+
+--
+-- Name: actors; Type: TABLE; Schema: public; Owner: yopi
+--
+
+CREATE TABLE public.actors (
+    id integer NOT NULL,
+    name text,
+    age text,
+    gender text
+);
+
+ALTER TABLE public.actors OWNER TO yopi;
+
+--
+-- Name: actors_id_seq; Type: SEQUENCE; Schema: public; Owner: yopi
+--
+
+CREATE SEQUENCE public.actors_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE public.actors_id_seq OWNER TO yopi;
+
+--
+-- Name: actors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: yopi
+--
+
+ALTER SEQUENCE public.actors_id_seq OWNED BY public.actors.id;
+
+--
+-- Name: movies id; Type: DEFAULT; Schema: public; Owner: yopi
+--
+
+ALTER TABLE ONLY public.movies ALTER COLUMN id SET DEFAULT nextval('public.movies_id_seq'::regclass);
+
+--
+-- Name: actors id; Type: DEFAULT; Schema: public; Owner: yopi
+--
+
+ALTER TABLE ONLY public.actors ALTER COLUMN id SET DEFAULT nextval('public.actors_id_seq'::regclass);
+
+--
+-- Data for Name: movies; Type: TABLE DATA; Schema: public; Owner: yopi
+--
+
+COPY public.movies (id, title, release_date) FROM stdin;
+1	Jumanji 	2020-01-09 00:40:23
+2	Captain America 	2020-01-15 11:19:35
+3	Great Gasby 	2020-01-19 01:06:47
+4	Harry Potter 	2020-02-29 16:33:41
+5	Deadpool 	2020-02-29 16:33:41
+6	X-men    	2020-08-12 13:05:11
+\.
+
+--
+-- Data for Name: actors; Type: TABLE DATA; Schema: public; Owner: yopi
+--
+
+COPY public.actors (id, name, age, gender) FROM stdin;
+1	Michael Fassbender 	38 	Male
+2	Alicia Vikander 	36 	Female
+3	Jerry Seinfeld 	61 	Male
+4	Amber Heard 	30 	Female
+5	Jake Gylenhaal 	30 	Male
+6	Tom Holland 	25 	Male
+\.
