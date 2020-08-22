@@ -84,7 +84,7 @@ class Actor(db.Model):
     age = Column(Integer)
     gender = Column(String)
 
-    def __init__(self, title, release_date):
+    def __init__(self, name, age, gender):
         self.name = name
         self.age = age
         self.gender = gender
@@ -99,7 +99,7 @@ class Actor(db.Model):
     def update(self):
         try:
             db.session.commit()
-        else:
+        except:
             db.session.rollback()
     
     def delete(self):
