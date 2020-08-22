@@ -5,6 +5,7 @@ from flask_cors import CORS
 
 #import database models from models.py
 from models import setup_db, Movie, Actor
+from auth impiort AuthError, requires_auth
 
 def create_app(test_config=None):
   # create and configure the app
@@ -12,7 +13,7 @@ def create_app(test_config=None):
   setup_db(app)
   
   #Setup CORS. Set all endpoints for origins. 
-  cors = CORS(app, resources={r"/api/*":{"origins":"*"}})w
+  cors = CORS(app, resources={r"/api/*":{"origins":"*"}})
 
   #Add after_request decorator to set Access-Control-Allow
   @app.after_request
