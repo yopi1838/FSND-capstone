@@ -130,10 +130,10 @@ def verify_decode_jwt(token):
             )
             return payload
         except jwt.ExpiredSignatureError:
-            raise AuthError([
+            raise AuthError({
                 'code': 'token_expired',
                 'description': 'Token expired.'
-            ], 401)
+            }, 401)
         except jwt.JWTClaimsError:
             raise AuthError({
                 'code': 'invalid_claim',

@@ -5,7 +5,7 @@ from flask_cors import CORS
 
 #import database models from models.py
 from models import setup_db, Movie, Actor
-from auth impiort AuthError, requires_auth
+from auth import AuthError, requires_auth
 
 def create_app(test_config=None):
   # create and configure the app
@@ -31,9 +31,11 @@ def create_app(test_config=None):
 
   '''
   Create Endpoint to handle GET requests for all movies
+  This should require the 'get:movies' permission
   '''
   @app.route('/movies', methods=['GET'])
-  def return_movies():
+  @requires_auth('get:movies')
+  def return_movies(jwt):
     try:
       #query the movie and format them with the defined methods.
       movies = Movie.query.order_by(Movie.id).all()
@@ -50,9 +52,11 @@ def create_app(test_config=None):
 
   '''
   Create Endpoint tohandle GET requests to handle all actors
+  This should require the 'get:actors' permission
   '''
   @app.route('/actors')
-  def return_actors():
+  @requires_auth('get:actors')
+  def return_actors(jwt):
     try:
       #query the actor and format them with previously defined methods
       actors = Actor.query.order_by(Actor.id).all()
@@ -70,9 +74,11 @@ def create_app(test_config=None):
   '''
   Create an endpoint to POST new movies
   This requires title and release date.
+  This requires 'post:movies' permission
   '''
   @app.route('/movies', methods=['POST'])
-  def create_movies():
+  @requires_auth('post:movies')
+  def create_movies(jwt):
     try:
       body = request.get_json()
       if not body:
@@ -97,9 +103,11 @@ def create_app(test_config=None):
   '''
   Create an endpoint to POST new actors
   This requires name, age, and gender
+  This requires 'post:actors' permission
   '''
   @app.route('/actors', methods=['POST'])
-  def create_actors():
+  @requires_auth('post:actors')
+  def create_actors(jwt):
     try:
       body = request.get_json()
       if not body:
@@ -124,9 +132,11 @@ def create_app(test_config=None):
 
   '''
   Create endpoint to DELETE movies based on the movie ID.
+  This requires 'delete:movies' permission
   '''
   @app.route('/movies/<int:movie_id>', methods=['DELETE'])
-  def delete_movies(movie_id):
+  @requires_auth('delete:movies')
+  def delete_movies(jwt,movie_id):
     try:
       movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
       if movie is None:
@@ -144,9 +154,11 @@ def create_app(test_config=None):
   
   '''
   Create endpoint to DELETE actors based on the actor ID.
+  This requires 'delete:actors' permission
   '''
   @app.route('/actors/<int:actor_id>', methods=['DELETE'])
-  def delete_actors(actor_id):
+  @requires_auth('delete:actors')
+  def delete_actors(jwt,actor_id):
     try:
       actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
       if actor is None:
@@ -164,9 +176,11 @@ def create_app(test_config=None):
 
   '''
   Create endpoint to PATCH movies based on the movie ID
+  This requires 'patch:movies' permission
   '''
   @app.route('/movies/<int:movie_id>', methods=['PATCH'])
-  def update_movies(movie_id):
+  @requires_auth('patch:movies')
+  def update_movies(jwt,movie_id):
     body = request.get_json()
     try:
       movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
@@ -182,26 +196,44 @@ def create_app(test_config=None):
     except:
       abort(422)
 
-    '''
-    Create endpoint to PATCH actors based on the actor ID
-    '''
-    @app.route('/actors/<int:actor_id>', methods=['PATCH'])
-    def update_actors(actor_id):
-      body.request.get_json()
-      try:
-        actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
-        if actor is None:
-          abort(404)
-        actor.name = body.get('name', None)
-        actor.age = body.get('age', None)
-        actor.gender = body.get('gender', None)
-        actor.update()
-        return jsonify({
-          'success': True,
-          'id': actor_id
-        })
-      except:
-        abort(422)
+  '''
+  Create endpoint to PATCH actors based on the actor ID
+  This requires the 'patch:actors' permission
+  '''
+  @app.route('/actors/<int:actor_id>', methods=['PATCH'])
+  @requires_auth('patch:actors')
+  def update_actors(jwt, actor_id):
+    body.request.get_json()
+    try:
+      actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
+      if actor is None:
+        abort(404)
+      actor.name = body.get('name', None)
+      actor.age = body.get('age', None)
+      actor.gender = body.get('gender', None)
+      actor.update()
+      return jsonify({
+        'success': True,
+        'id': actor_id
+      })
+    except:
+      abort(422)
+
+  '''
+  From this part, we define the error message to make it readable
+  '''
+  '''
+  Implement error handler for AuthError
+  '''
+  @app.errorhandler(AuthError)
+  def authorization_error(e):
+    error_tag = e.error
+    error_statuscode = e.status_code
+    return jsonify({
+      'success': False,
+      'error': error_statuscode,
+      'message': error_tag['description']
+    }), error_statuscode
 
   return app
 
