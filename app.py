@@ -2,6 +2,7 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_migrate import Migrate
 
 #import database models from models.py
 from models import setup_db, Movie, Actor
@@ -11,6 +12,8 @@ def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
   setup_db(app)
+  db = SQLAlchemy(app)
+  migrate = Migrate(app, db)
   
   #Setup CORS. Set all endpoints for origins. 
   cors = CORS(app, resources={r"/api/*":{"origins":"*"}})
@@ -68,7 +71,8 @@ def create_app(test_config=None):
         'actors': formatted_actors,
         'total_actors': len(formatted_actors)
       })
-    except:
+    except Exception as e:
+      print(e)
       abort(422)
     
   '''
@@ -173,7 +177,6 @@ def create_app(test_config=None):
       })
     except:
       abort(422)
-
   '''
   Create endpoint to PATCH movies based on the movie ID
   This requires 'patch:movies' permission
@@ -195,22 +198,25 @@ def create_app(test_config=None):
       })
     except:
       abort(422)
-
+      
   '''
   Create endpoint to PATCH actors based on the actor ID
   This requires the 'patch:actors' permission
   '''
   @app.route('/actors/<int:actor_id>', methods=['PATCH'])
   @requires_auth('patch:actors')
-  def update_actors(jwt, actor_id):
-    body.request.get_json()
+  def update_actors(jwt,actor_id):
+    dude = request.get_json()
+    
     try:
+      if not dude:
+        abort(400)
       actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
       if actor is None:
         abort(404)
-      actor.name = body.get('name', None)
-      actor.age = body.get('age', None)
-      actor.gender = body.get('gender', None)
+      actor.name = dude.get('name', None)
+      actor.age = dude.get('age', None)
+      actor.gender = dude.get('gender', None)
       actor.update()
       return jsonify({
         'success': True,
@@ -222,6 +228,41 @@ def create_app(test_config=None):
   '''
   From this part, we define the error message to make it readable
   '''
+  #404 not found error
+  @app.errorhandler(404)
+  def not_found_error(error):
+    return jsonify({
+      'success': False,
+      'error': 404,
+      'message': 'not found'
+    }), 404
+
+  #422 unprocessable 
+  @app.errorhandler(422)
+  def unprocessable(error):
+    return jsonify({
+      'success': False,
+      'error': 422,
+      'message': 'unprocessable'
+    }), 422
+
+  #500 internal server error
+  @app.errorhandler(500)
+  def server_error(error):
+    return jsonify({
+      'success': False,
+      'error': 500,
+      'message': 'internal server error'
+    })
+  
+  @app.errorhandler(400)
+  def bad_request(error):
+    return jsonify({
+      'success': False,
+      'error':  400,
+      'message': 'bad request'
+    })
+
   '''
   Implement error handler for AuthError
   '''

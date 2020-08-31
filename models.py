@@ -16,7 +16,7 @@ import json
 #define the name of the database and the postgres path. 
 # Make sure the name matches to the created local database
 
-db_name = "castingagency"
+db_name = "casting_yopi"
 db_path = "postgres://{}@{}/{}".format('yopiprabowooktiovan','localhost:5432', db_name)
 
 db = SQLAlchemy()

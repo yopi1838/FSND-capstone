@@ -59,7 +59,7 @@ ALTER SEQUENCE public.movies_id_seq OWNED BY public.movies.id;
 CREATE TABLE public.actors (
     id integer NOT NULL,
     name text,
-    age text,
+    age integer,
     gender text
 );
 
