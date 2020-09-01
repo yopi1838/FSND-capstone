@@ -5,10 +5,10 @@ Welcome to my Capstone Project for Full Stack Developers Nano Degree program. Th
 This API is responsible for creating, managing movies and actors. 
 
 ## Objectives
-1. Create two database models of 'Movie' and 'Actor' in 'models.py'
-2. Create a CRUD RESTful API using Flask in 'app.py'
-3. Provide the verification of permissions of the user's role in 'auth.py'
-4. Automate tests in 'test_app.py'
+1. Create two database models of `Movie` and `Actor` in `models.py`
+2. Create a CRUD RESTful API using Flask in `app.py`
+3. Provide the verification of permissions of the user's role in `auth.py`
+4. Automate tests in `test_app.py`
 5. Deploy applications using heroku
 
 ## Getting Started
@@ -31,14 +31,74 @@ Refer to the [python docs](https://docs.python.org/3/using/unix.html#getting-and
 
 We recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organaized. Instructions for setting up a virual enviornment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 
-```
+```bash
 $ virtualenv venv
 $ source venv/bin/activate
 $ pip3 install -r requirements.txt
 ```
 
 ### Populate the Database
-You can use 'movies.psql' to populate the database. Create the database using createdb command and populate them using psql command. These are all packaged under 'set_db.sh':
+You can use `movies.psql` to populate the database. Create the database using createdb command and populate them using psql command. These are all under `set_db.sh`:
 ```
 source ./set_db.sh
 ```
+
+### Running the server
+To run the server, execute:
+
+```bash
+$ source setup.sh
+$ export FLASK_APP=app.py
+$ export FLASK_ENV=development
+$ flask run
+```
+or simply:
+
+```bash
+$ source ./setup.sh
+$ flask run
+```
+
+Setting the `FLASK_ENV` variable to `development` will detect file changes and restart the server automatically.
+
+Setting the `FLASK_APP` variable to `app.py` which directs flask to find the application consisting of all the main app methods.
+
+## User Roles and Permissions:
+- Casting Assistant
+    - Can view actors and movies. These include permissions:
+        - 'get:movies'
+        - 'get:actors'
+
+- Casting Director
+    - All permissions a Casting Assistant has, including:
+    - Add or delete an actor from the database. These actions need permissions:
+        - 'post:actors'
+        - 'delete:actors'
+    - Modify actors or movies. These actions need permissions:
+        - 'patch:actors'
+        - 'patch:movies'
+
+- Executive Producer
+    - All permissions a Casting Director has, including:
+    - Add or delete a movie from the database. These actions need permissions:
+        - 'post:movies'
+        - 'delete:movies'
+
+- Note: We can check the payload of a user's JWT token can be decoded at [jwt.io](https://jwt.io/) to see permission for each token. 
+
+## Deployment
+The API is deployed using Heroku
+
+## Endpoints
+- GET '/movies'
+- GET '/actors'
+- POST '/movies'
+- POST '/actors'
+- PATCH '/movies/<int:movie_id>'
+- PATCH '/actors/<int:actor_id>'
+- DELETE '/movies/<int:movie_id>'
+- DELETE '/actors/<int:actor_id>'
+
+
+
+
