@@ -99,6 +99,64 @@ The API is deployed using Heroku
 - DELETE '/movies/<int:movie_id>'
 - DELETE '/actors/<int:actor_id>'
 
+### GET '/movies'
+- Fetches a dictionary of movies consisting of movie title and its corresponding release date
+- Required Permission: `get:movies`
+- Request Arguments: None
+- Returns: A JSON object with 2 key-value pairs; movies (return the formatted movies), total_movies( return the total movies in the database)
+```JSON
+{
+    "movies":[
+    {
+        "id": 5,
+        "title": "Deadpool",
+        "release_date": "2020-02-29 16:33:41"
+    },
+    {
+        "id": 6,
+        "title": "Harry Potter and The Prisoner of Azkaban",
+        "release_date": "2004-06-26 10:45:24"
+    },
+    {
+        "id": 3,
+        "title": "Back to The Future",
+        "release_date": "1985-12-07 21:37:24"
+    }
+    ],
+    "success": true
+}
+```
+
+### GET '/actors'
+- Fetches dictionary of actors
+- Required Permission: `get:actors`
+- Request Arguments: None
+- Returns: A JSON object with two key-value pairs; actors (return the formatted actors), and total_actors(return the total actors in the database)
+```JSON
+{
+    "actors":[
+    {
+        "id": 1,
+        "name": "Robert De Niro",
+        "age": 77,
+        "gender": "Male"
+    },
+    {
+        "id":2,
+        "name": "Gerard Butler",
+        "age": 40,
+        "gender": "Male"
+    },
+    {
+        "id":3,
+        "name": "Jerry Seinfeld",
+        "age": 60,
+        "gender": "Male"
+    }
+    ],
+    "success": true
+}
+```
 
 
 
