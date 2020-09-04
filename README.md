@@ -158,5 +158,35 @@ The API is deployed using Heroku
 }
 ```
 
+### POST '/movies'
+- POST movies into the database
+- Required Permission: `post:movies`
+- Request Arguments: JSON object with title and release_date key-value pairs
+```JSON
+{
+    "title": "Jumanji",
+    "release_date": "2020-01-09 00:40:23"
+}
+```
+- Returns: A JSON object with the movie title and total of the movies in database
+```JSON
+{
+    "success": true,
+    "title": "Jumanji",
+    "total_movies": 6
+}
+```
+
+### POST '/actors/'
+- POST actors into the database
+- Required Permission: `post:actors`
+- Request Arguments: JSON object with name, age, and gender key-value pairs
+```JSON
+{
+    "name": "Gerard Butler",
+    "age": 40,
+    "gender": "Male"
+}
+```
 
 
