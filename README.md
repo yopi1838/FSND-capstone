@@ -177,7 +177,7 @@ The API is deployed using Heroku
 }
 ```
 
-### POST '/actors/'
+### POST '/actors'
 - POST actors into the database
 - Required Permission: `post:actors`
 - Request Arguments: JSON object with name, age, and gender key-value pairs
@@ -189,4 +189,20 @@ The API is deployed using Heroku
 }
 ```
 
-
+### PATCH '/movies/<int:movie_id>'
+- PATCH a movie entry based on the `movie_id`
+- Required Permission: `patch:movies`
+- Request Arguments: A JSON object with title and release_date key-value pairs
+```JSON
+{
+    "title": "Back to The Future",
+    "release_date": "1985-12-07 21:37:24"
+}
+```
+- Returns: A JSON object with success indicator and the id of the updated movie
+```JSON
+{
+    "success": true,
+    "id": 6,
+}
+```
