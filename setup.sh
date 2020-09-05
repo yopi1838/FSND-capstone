@@ -3,3 +3,6 @@ export AUTH0_DOMAIN='dev-eu13-nvj.us.auth0.com'
 export ALGORITHMS=['RS256']
 export API_AUDIENCE='castingagency'
 export YOUR_CLIENT_ID='G6QNHIuS6abCX6P4QwKzytb70pzHBKZD'
+export FLASK_APP='app.py'
+export FLASK_ENV='development'
+flask run
