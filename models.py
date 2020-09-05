@@ -32,10 +32,16 @@ def setup_db(app, database_path=db_path):
     db.init_app(app)
     # db.create_all()
 
+def db_drop_and_create_all():
+    db.drop_all()
+    db.create_all()
+    init_db()
+
 '''
 Define the table as class
 Movie
 '''
+
 class Movie(db.Model):
     __tablename__='movies'
 
@@ -115,3 +121,27 @@ class Actor(db.Model):
             'age': self.age,
             'gender': self.gender
         }
+
+#Populate database
+#Inspiration from https://github.com/InfinityByTen/fsnd-capstone/blob/ad8618411849ee9b4d2a255065b5e07e7e9bb99b/models.py#L109
+def init_db():
+    actors = [
+        Actor(name="Tom Holland", age=23, gender="Male"),
+        Actor(name="Tim Daly", age=58, gender="Male"),
+        Actor(name="Amber Heard", age=30, gender="Female"),
+        Actor(name="Chris Evans", age=34, gender="Male"),
+        Actor(name="Halle Berry", age=57, gender="F")
+    ]
+
+    db.session.add_all(actors)
+
+    movies = [
+        Movie(title="Jumanji",
+              release_date=datetime.date(day=1, month=1, year=2040)),
+        Movie(title="Deadpool",
+              release_date=datetime.date(day=1, month=1, year=1985)),
+        Movie(title="The Karate Kid",
+              release_date=datetime.date(day=1, month=1, year=2023))
+    ]
+    db.session.add_all(movies)
+    db.session.commit()
