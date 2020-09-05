@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, abort, jsonify
+from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
@@ -11,8 +12,10 @@ from auth import AuthError, requires_auth
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
+  app.config.from_object(Config)
   setup_db(app)
   db = SQLAlchemy(app)
+  migrate = Migrate(app,db)
   
   #Setup CORS. Set all endpoints for origins. 
   cors = CORS(app, resources={r"/api/*":{"origins":"*"}})
