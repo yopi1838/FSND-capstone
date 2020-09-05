@@ -3,6 +3,7 @@ dataclasses-jsonschema
 Flask==1.1.2
 Flask-SQLAlchemy==2.4.0
 Flask-Migrate
+Flask-Script
 flask_cors
 gunicorn==20.0.4
 oauthlib==3.1.0
