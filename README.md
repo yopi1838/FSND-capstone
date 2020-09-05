@@ -90,7 +90,7 @@ source token.sh
 - Note: We can check the payload of a user's JWT token can be decoded at [jwt.io](https://jwt.io/) to see permission for each token. 
 
 ## Deployment
-The API is deployed using Heroku
+The API is deployed using Heroku. You can run them [here] (https://castingagencyyopi.herokuapp.com/)
 
 ## Endpoints
 - GET '/movies'
