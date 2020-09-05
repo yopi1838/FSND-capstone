@@ -8,6 +8,7 @@ from sqlalchemy import Column, String, Integer, create_engine, DateTime
 import datetime
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from datetime import datetime
 import json
 
