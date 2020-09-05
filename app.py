@@ -13,7 +13,6 @@ def create_app(test_config=None):
   app = Flask(__name__)
   setup_db(app)
   db = SQLAlchemy(app)
-  migrate = Migrate(app, db)
   
   #Setup CORS. Set all endpoints for origins. 
   cors = CORS(app, resources={r"/api/*":{"origins":"*"}})
