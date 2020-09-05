@@ -83,7 +83,10 @@ Setting the `FLASK_APP` variable to `app.py` which directs flask to find the app
     - Add or delete a movie from the database. These actions need permissions:
         - 'post:movies'
         - 'delete:movies'
-
+- Run `token.sh` to export the token for each roles
+```bash
+source token.sh
+```
 - Note: We can check the payload of a user's JWT token can be decoded at [jwt.io](https://jwt.io/) to see permission for each token. 
 
 ## Deployment
@@ -108,17 +111,17 @@ The API is deployed using Heroku
 {
     "movies":[
     {
-        "id": 5,
+        "id": 3,
         "title": "Deadpool",
         "release_date": "2020-02-29 16:33:41"
     },
     {
-        "id": 6,
+        "id": 5,
         "title": "Harry Potter and The Prisoner of Azkaban",
         "release_date": "2004-06-26 10:45:24"
     },
     {
-        "id": 3,
+        "id": 6,
         "title": "Back to The Future",
         "release_date": "1985-12-07 21:37:24"
     }
@@ -203,6 +206,94 @@ The API is deployed using Heroku
 ```JSON
 {
     "success": true,
-    "id": 6,
+    "id": 6
 }
 ```
+
+### PATCH '/actors/<int:actor_id>'
+- PATCH an actor entry based on the `actor_id`
+- Required Permission: `patch:movies`
+- Request Arguments: A JSON object with name, age, and gender key-value pairs
+```JSON
+{
+    "name": "Tom Holland",
+    "age": 23,
+    "gender": "Male"
+}
+```
+- Returns: A JSON object with success indicator and the id of the updated actor
+```JSON
+{
+    "success": true,
+    "id": 2
+}
+```
+
+### DELETE '/movies/<int:movie_id>'
+- DELETE a movie entry from database based on the `movie_id`
+- Required Permission: `delete:movies`
+- Required Arguments: None
+- Returns: A JSON object with success indicator and the id of the deleted movie and current dictionary of movies in the database
+```JSON
+{
+    "success": true,
+    "delete": 6,
+    "movies_now": [
+    {
+        "id": 3,
+        "title": "Deadpool",
+        "release_date": "2020-02-29 16:33:41"
+    },
+    {
+        "id": 5,
+        "title": "Harry Potter and The Prisoner of Azkaban",
+        "release_date": "2004-06-26 10:45:24"
+    }
+    ]
+}
+```
+
+### DELETE '/actors/<int:actor_id>'
+- DELETE an actor entry from database based on `actor_id`
+- Required Permission: `delete:actors`
+- Required Arguments: None
+- Returns: A JSON object with success indicator and the id of the deleted actor and current dictionary of actors in the database
+```JSON
+{
+    "success": true,
+    "delete": 3,
+    "actors_now": [
+    {
+        "id": 1,
+        "name": "Robert De Niro",
+        "age": 77,
+        "gender": "Male"
+    },
+    {
+        "id":2,
+        "name": "Gerard Butler",
+        "age": 40,
+        "gender": "Male"
+    }
+    ]
+}
+```
+
+## Testing API
+Create the database for API testing by running
+```
+source test_db.sh
+```
+Note: the above command runs on postgres, if have not installed yet [link](https://www.postgresql.org/download/)
+
+To run the tests, run
+```bash
+source setup.sh
+python3 test_app.py
+```
+
+## Authors
+Yopi Prabowo Oktiovan
+
+## Acknowledgement
+Author would like to thank Udacity for the content of the FSND course and the help of mentors throughout the course. 
