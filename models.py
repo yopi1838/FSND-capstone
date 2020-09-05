@@ -137,11 +137,11 @@ def init_db():
 
     movies = [
         Movie(title="Jumanji",
-              release_date=datetime.date(day=1, month=1, year=2040)),
+              release_date="2020-02-29 16:33:41"),
         Movie(title="Deadpool",
-              release_date=datetime.date(day=1, month=1, year=1985)),
+              release_date="2020-02-29 16:33:41"),
         Movie(title="The Karate Kid",
-              release_date=datetime.date(day=1, month=1, year=2023))
+              release_date="2020-01-19 01:06:47")
     ]
     db.session.add_all(movies)
     db.session.commit()
