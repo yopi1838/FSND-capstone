@@ -17,8 +17,7 @@ import json
 # Make sure the name matches to the created local database
 
 db_name = "casting_yopi"
-db_path = "postgres://{}@{}/{}".format('yopiprabowooktiovan','localhost:5432', db_name)
-
+db_path = os.environ["DATABASE_URL"]
 db = SQLAlchemy()
 
 '''
@@ -31,7 +30,7 @@ def setup_db(app, database_path=db_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    db.create_all()
+    # db.create_all()
 
 '''
 Define the table as class
